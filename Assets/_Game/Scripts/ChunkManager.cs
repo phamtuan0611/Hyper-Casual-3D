@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class ChunkManager : MonoBehaviour
 {
+    public static ChunkManager instance;
+
     [Header(" Settings ")]
     [SerializeField] private Chunk[] chunkPrefab;
     [SerializeField] private Chunk[] levelChunk;
+    private GameObject finishLine;
+
+    private void Awake()
+    {
+        if (instance != null)
+            Destroy(gameObject);
+        else
+            instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         CreateOrderedLevel();
         //CreateRandomLevel();
+
+        finishLine = GameObject.FindWithTag("Finish");
     }
 
     // Update is called once per frame
@@ -49,5 +62,10 @@ public class ChunkManager : MonoBehaviour
 
             chunkPosition.z += chunkInstance.GetLength() / 2;
         }
+    }
+
+    public float GetFinishZ()
+    {
+        return finishLine.transform.position.z;
     }
 }
