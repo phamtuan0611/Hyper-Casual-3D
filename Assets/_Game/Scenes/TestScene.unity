@@ -324,6 +324,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - {fileID: 11400000, guid: ec3b921ffdc32a84fa522a0ee5261d16, type: 2}
+  - {fileID: 11400000, guid: b7bc45a48c5f763468d280b7d386cbb9, type: 2}
+  - {fileID: 11400000, guid: 91603ad88b8133c40b240930e9db3d71, type: 2}
 --- !u!4 &110465893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3320186288542741420, guid: fd5bdf52a758cdd4790f6c2e3d59a0c6, type: 3}
@@ -525,7 +527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &223281479
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1049,7 +1051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 260}
+  m_AnchoredPosition: {x: 0, y: 500}
   m_SizeDelta: {x: 925, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &534189277
@@ -1231,6 +1233,7 @@ MonoBehaviour:
   menuPanel: {fileID: 1924164977}
   gamePanel: {fileID: 1453930849}
   gameOverPanel: {fileID: 378010621}
+  levelCompletePanel: {fileID: 223281478}
   progressBar: {fileID: 1401958469}
   levelText: {fileID: 845659173}
 --- !u!4 &610650185
