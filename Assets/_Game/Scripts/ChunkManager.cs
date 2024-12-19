@@ -7,8 +7,10 @@ public class ChunkManager : MonoBehaviour
     public static ChunkManager instance;
 
     [Header(" Settings ")]
-    [SerializeField] private Chunk[] chunkPrefab;
-    [SerializeField] private Chunk[] levelChunk;
+    //[SerializeField] private Chunk[] chunkPrefab;
+    //[SerializeField] private Chunk[] levelChunk;
+    [SerializeField] private LevelSO[] levels;
+
     private GameObject finishLine;
 
     private void Awake()
@@ -22,8 +24,9 @@ public class ChunkManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CreateOrderedLevel();
+        //CreateOrderedLevel();
         //CreateRandomLevel();
+        GenerateLevel();
 
         finishLine = GameObject.FindWithTag("Finish");
     }
@@ -34,12 +37,23 @@ public class ChunkManager : MonoBehaviour
 
     }
 
-    private void CreateOrderedLevel()
+    private void GenerateLevel()
+    {
+        int currentLevel = GetLevel();
+
+        currentLevel = currentLevel % levels.Length;
+
+        LevelSO level = levels[currentLevel];
+
+        CreateLevel(level.chunks);
+    }
+
+    private void CreateLevel(Chunk[] levelChunks)
     {
         Vector3 chunkPosition = Vector3.zero;
-        for (int i = 0; i < levelChunk.Length; i++)
+        for (int i = 0; i < levelChunks.Length; i++)
         {
-            Chunk chunkToCreate = levelChunk[i];
+            Chunk chunkToCreate = levelChunks[i];
 
             if (i > 0) chunkPosition.z += chunkToCreate.GetLength() / 2;
 
@@ -49,20 +63,35 @@ public class ChunkManager : MonoBehaviour
         }
     }
 
-    private void CreateRandomLevel()
-    {
-        Vector3 chunkPosition = Vector3.zero;
-        for (int i = 0; i < 5; i++)
-        {
-            Chunk chunkToCreate = chunkPrefab[Random.Range(0, chunkPrefab.Length)];
+    //private void CreateOrderedLevel()
+    //{
+    //    Vector3 chunkPosition = Vector3.zero;
+    //    for (int i = 0; i < levelChunk.Length; i++)
+    //    {
+    //        Chunk chunkToCreate = levelChunk[i];
 
-            if (i > 0) chunkPosition.z += chunkToCreate.GetLength() / 2;
+    //        if (i > 0) chunkPosition.z += chunkToCreate.GetLength() / 2;
 
-            Chunk chunkInstance = Instantiate(chunkToCreate, chunkPosition, Quaternion.identity, transform);
+    //        Chunk chunkInstance = Instantiate(chunkToCreate, chunkPosition, Quaternion.identity, transform);
 
-            chunkPosition.z += chunkInstance.GetLength() / 2;
-        }
-    }
+    //        chunkPosition.z += chunkInstance.GetLength() / 2;
+    //    }
+    //}
+
+    //private void CreateRandomLevel()
+    //{
+    //    Vector3 chunkPosition = Vector3.zero;
+    //    for (int i = 0; i < 5; i++)
+    //    {
+    //        Chunk chunkToCreate = chunkPrefab[Random.Range(0, chunkPrefab.Length)];
+
+    //        if (i > 0) chunkPosition.z += chunkToCreate.GetLength() / 2;
+
+    //        Chunk chunkInstance = Instantiate(chunkToCreate, chunkPosition, Quaternion.identity, transform);
+
+    //        chunkPosition.z += chunkInstance.GetLength() / 2;
+    //    }
+    //}
 
     public float GetFinishZ()
     {
