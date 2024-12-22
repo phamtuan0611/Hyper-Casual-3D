@@ -6,12 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    [Header(" Managers ")]
+    [SerializeField] private ShopManager shopManager;
+
     [Header(" Elements ")]
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject levelCompletePanel;
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject shopPanel;
 
     [SerializeField] private Slider progressBar;
     [SerializeField] private Text levelText;
@@ -24,6 +28,7 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         levelCompletePanel.SetActive(false);
         settingsPanel.SetActive(false);
+        shopPanel.SetActive(false);
 
         levelText.text = "Level " + (ChunkManager.instance.GetLevel() + 1);
 
@@ -91,5 +96,17 @@ public class UIManager : MonoBehaviour
     public void HideSettingsPanel()
     {
         settingsPanel.SetActive(false);
+    }
+
+    public void ShowShop()
+    {
+        shopPanel.SetActive(true);
+        shopManager.UpdatePurchaseButton();
+    }
+
+    public void HideShop()
+    {
+        Debug.Log("Button Close Shop");
+        shopPanel.SetActive(false);
     }
 }

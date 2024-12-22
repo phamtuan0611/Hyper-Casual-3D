@@ -6,15 +6,27 @@ using UnityEngine.UI;
 public class ShopManager : MonoBehaviour
 {
     [Header(" Elements ")]
+    [SerializeField] private Button purchaseButton;
     [SerializeField] private SkinButton[] skinButtons;
 
     [Header(" Skins ")]
     [SerializeField] private Sprite[] skins;
 
+    [Header(" Pricing ")]
+    [SerializeField] private int skinPrice;
+    [SerializeField] private Text priceText;
+
+    private void Awake()
+    {
+        priceText.text = skinPrice.ToString();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         ConfigureButtons();
+
+        UpdatePurchaseButton();
 
         //SelectSkin(0);
     }
@@ -51,6 +63,12 @@ public class ShopManager : MonoBehaviour
         skinButtons[skinIndex].UnLock();
     }
 
+    private void UnlockSkin(SkinButton skinButton)
+    {
+        int skinIndex = skinButton.transform.GetSiblingIndex();
+        UnlockSkin(skinIndex);
+    }
+
     private void SelectSkin(int skinIndex)
     {
         Debug.Log("Skin " + skinIndex + " has been selected");
@@ -62,5 +80,37 @@ public class ShopManager : MonoBehaviour
             else
                 skinButtons[i].DeSelect();
         }
+    }
+
+    public void PurchaseSkin()
+    {
+        List<SkinButton> skinButtonsList = new List<SkinButton>();
+
+        for (int i = 0; i < skinButtons.Length; i++)
+            if (!skinButtons[i].IsUnlocked())
+                skinButtonsList.Add(skinButtons[i]);
+
+        if (skinButtonsList.Count <= 0)
+            return;
+
+        // At this point, we still have some locked skins
+        // And we have a list of all of them !!! 
+
+        SkinButton randomSkinButton = skinButtonsList[Random.Range(0, skinButtonsList.Count)];
+
+        UnlockSkin(randomSkinButton);
+        SelectSkin(randomSkinButton.transform.GetSiblingIndex());
+
+        DataManager.instance.UseCoins(skinPrice);
+
+        UpdatePurchaseButton();
+    }
+
+    public void UpdatePurchaseButton()
+    {
+        if (DataManager.instance.GetCoins() < skinPrice)
+            purchaseButton.interactable = false;
+        else
+            purchaseButton.interactable = true;
     }
 }
