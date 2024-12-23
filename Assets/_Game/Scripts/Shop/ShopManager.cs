@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+
+using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
 {
@@ -16,17 +19,26 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private int skinPrice;
     [SerializeField] private Text priceText;
 
+    [Header(" Events ")]
+    public static Action<int> onSkinSelected;
+
     private void Awake()
     {
+        UnlockSkin(0);
+
         priceText.text = skinPrice.ToString();
     }
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
         ConfigureButtons();
 
         UpdatePurchaseButton();
+
+        yield return null;
+
+        SelectSkin(GetLastSelectedSkin());
 
         //SelectSkin(0);
     }
@@ -80,6 +92,10 @@ public class ShopManager : MonoBehaviour
             else
                 skinButtons[i].DeSelect();
         }
+
+        onSkinSelected?.Invoke(skinIndex);
+
+        SaveLastSelectedSkin(skinIndex);
     }
 
     public void PurchaseSkin()
@@ -112,5 +128,15 @@ public class ShopManager : MonoBehaviour
             purchaseButton.interactable = false;
         else
             purchaseButton.interactable = true;
+    }
+
+    private int GetLastSelectedSkin()
+    {
+        return PlayerPrefs.GetInt("lastSelectedSkin", 0);
+    }
+
+    private void SaveLastSelectedSkin(int skinIndex)
+    {
+        PlayerPrefs.SetInt("lastSelectedSkin", skinIndex);
     }
 }
